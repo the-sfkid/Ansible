@@ -1,0 +1,17 @@
+---
+- hosts: 172.31.6.136
+  become: true
+  tasks:
+    - name: Copy index.html
+      copy:
+        src: /home/ansible/index.html
+        dest: /var/www/html/
+
+- hosts: 172.31.6.136
+  become: true
+  tasks:
+    - name: Restart httpd service
+      service:
+        name: httpd
+        state: restarted
+...
