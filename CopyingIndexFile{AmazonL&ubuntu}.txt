@@ -1,0 +1,26 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Copy index.html
+      copy:
+        src: /home/ansible/index.html
+        dest: /var/www/html/
+      tags:
+        - copy_index_html
+
+    - name: Restart httpd service on CentOS/RHEL
+      systemd:
+        name: httpd
+        state: restarted
+      when: ansible_distribution == 'Amazon' or ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat'
+      tags:
+        - restart_httpd_centos
+
+    - name: Restart apache2 service on Ubuntu
+      systemd:
+        name: apache2
+        state: restarted
+      when: ansible_distribution == 'Ubuntu'
+      tags:
+        - restart_apache2_ubuntu
